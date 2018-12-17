@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-char *randString(char *, size_t);
-int32_t rdtsc();
+static char *randString(char *, size_t);
+static uint32_t rdtsc();
+
+#include "shareUtil.c"
 
 #endif
