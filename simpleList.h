@@ -3,18 +3,10 @@
 #define _SLINKED_H_
 
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
-#include <pthread.h>
-
-#define STACK_SZ 335544320
-#define THREADS 2
-
-static bool inUse;
-pthread_mutex_t mtx;
-pthread_t thr[THREADS];
 
 enum types{
 	string,
@@ -34,50 +26,34 @@ typedef struct List{ //Cabeza
 	int32_t type;
 }simpList_t;
 
-//Pregunta del retorno de funciones: "¿Hubo error?"
-
 //Definicion de inline
-static inline bool isEmpty(simpList_t * restrict gInit){ 
-	return !gInit->begin; 
+inline bool isEmpty(simpList_t * restrict gInit){ 
+	return (!gInit->begin) ? true : false; 
 }
-
-static inline const int32_t getSize(simpList_t * restrict gInit){ 
+inline const int32_t getSize(simpList_t * restrict gInit){ 
 	return gInit->size; 
 }
-
-static inline void destroyList(simpList_t * restrict gInit){
-	free(gInit);
-}
-
-static inline node_t *createNode(){
-	return (node_t*)calloc(0x1,sizeof(node_t));
-}
-
 //Declaracion de funciones
-static simpList_t *createList(int32_t);
-static void *assignData(void * restrict, int32_t);
-static bool addStrAtEnd(simpList_t * restrict * restrict, const char * restrict);
-static bool addStrAtBegining(simpList_t * restrict * restrict, const char * restrict);
-static bool addStrAtPosition(simpList_t * restrict * restrict, const int32_t, 
+simpList_t *createStrList();
+simpList_t *createNumList();
+void addStrAtEnd(simpList_t * restrict * restrict, const char * restrict);
+void addStrAtBegining(simpList_t * restrict * restrict, const char * restrict);
+void addStrAtPosition(simpList_t * restrict * restrict, const int32_t, 
 		const char * restrict);
-static bool addNumAtEnd(simpList_t * restrict * restrict, const float);
-static bool addNumAtBegining(simpList_t * restrict * restrict, const float);
-static bool addNumAtPosition(simpList_t * restrict * restrict, const int32_t, const float);
-static bool printList(simpList_t * restrict, const int32_t); //(Lista, numero de decimales)
-static bool reindex(simpList_t * restrict * restrict);
-static node_t *searchNode(simpList_t * restrict, const int32_t);
-static bool deleteNodeByIndex(simpList_t * restrict * restrict, const int32_t);
-static bool deleteNodeByStr(simpList_t * restrict * restrict, const char * restrict);
-static bool deleteNodeByNum(simpList_t * restrict * restrict, const float);
-static void cleanList(simpList_t * restrict);
-static bool reverse(simpList_t * restrict * restrict);
-static bool mergeSort(simpList_t * restrict * restrict);
-static void mergeSortNum(node_t * restrict * restrict);
-static void mergeSortStr(node_t * restrict * restrict);
-static node_t *sortedMergeNum(node_t * restrict, node_t * restrict);
-static node_t *sortedMergeStr(node_t * restrict, node_t * restrict);
-static node_t *splitList(node_t * restrict);
-
-#include "simpleList.c"
+void addNumAtEnd(simpList_t * restrict * restrict, const float);
+void addNumAtBegining(simpList_t * restrict * restrict, const float);
+void addNumAtPosition(simpList_t * restrict * restrict, const int32_t, const float);
+void printStr(simpList_t * restrict);
+void printNum(simpList_t * restrict, const int32_t); //(Lista, numero de decimales)
+void reindex(simpList_t * restrict * restrict);
+node_t *searchNode(simpList_t * restrict, const int32_t);
+void deleteNode(simpList_t * restrict * restrict, const int32_t);
+void cleanList(simpList_t * restrict);
+void destroyList(simpList_t * restrict);
+void reverse(simpList_t * restrict * restrict);
+void quicksortStr(simpList_t * restrict * restrict);
+void quicksortNum(simpList_t * restrict * restrict);
+int32_t cmpNum(const void *, const void *);
+int32_t cmpStr(const void *, const void *);
 
 #endif
